@@ -21,6 +21,8 @@ def ask_for_input(text):
     """
 
     input_text = input(text).upper()
+    if input_text == '':
+        ask_for_input(text)
     return input_text
 
 
@@ -35,7 +37,7 @@ def validate(input_text, kind):
         - If the input_text is a string
         - If input_text contains exactly 4 characters
     - kind: 1 stands for the menu-item validation
-        - If the input_text is an interger
+        - If the input_text is an integer
         - If the input_text isn't higher than the highest menu-item
     """
 
@@ -48,10 +50,9 @@ def validate(input_text, kind):
     elif kind == 1:
         try:
             input_text = int(input_text)
+            if input_text > 6:
+                valid = False
         except ValueError:
-            valid = False
-
-        if input_text > 6:
             valid = False
 
     return valid
@@ -77,16 +78,19 @@ def request_valid_input(text, kind):
 
 def feedback_calculate(answer, guess):
     """
-    In this function I'm handeling the guess from the player or computer.
+    In this function I'm handling the guess from the player or computer.
 
     I'm returning this value as described in the artikel, Yet another mastermind strategy.
     Its going to be a list with 2 items.
         - The first number refers to the ammount of 'pawns' that are in the right position and the right color.
           In this case the its a correct Letter and on the right index.
-          If this is the case i change the value in the guess and answer copied list to 'Z' or 'W'
+          If this is the case I change the value in the guess and answer copied list to 'Z' or 'W' for Zwart,
+          Dutch for black because the 'B' was already in the combination, and White.
 
         - The second number refers to the ammount of 'pawns' that are just the right color.
           In this case the its a correct Letter.
+
+          If this is the case I change the value in the answers list to a 'T' for taken
     """
 
     tmp_answer = answer.copy()
@@ -102,7 +106,7 @@ def feedback_calculate(answer, guess):
 
     for i, c in enumerate(tmp_guess):
         if c in tmp_answer:
+            tmp_answer[tmp_answer.index(c)] = 'T'
             feedback[1] += 1
 
     return feedback
-
