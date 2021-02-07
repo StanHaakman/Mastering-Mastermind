@@ -1,4 +1,5 @@
 import random
+# from main import GUESSES
 
 COMBINATIONS = ['A', 'B', 'C', 'D', 'E', 'F']
 
@@ -61,7 +62,7 @@ def validate(input_text, kind):
 def request_valid_input(text, kind):
     """
     This is the main input/validate function.
-    It works as a sort of loop that keeps calling himself untill the validation is correct.
+    It works as a sort of loop that keeps calling himself until the validation is correct.
 
     At that point the function returns the user input_text to the main game loop
     """
@@ -80,14 +81,14 @@ def feedback_calculate(answer, guess):
     """
     In this function I'm handling the guess from the player or computer.
 
-    I'm returning this value as described in the artikel, Yet another mastermind strategy.
+    I'm returning this value as described in the article, Yet another mastermind strategy.
     Its going to be a list with 2 items.
-        - The first number refers to the ammount of 'pawns' that are in the right position and the right color.
+        - The first number refers to the amount of 'pawns' that are in the right position and the right color.
           In this case the its a correct Letter and on the right index.
           If this is the case I change the value in the guess and answer copied list to 'Z' or 'W' for Zwart,
           Dutch for black because the 'B' was already in the combination, and White.
 
-        - The second number refers to the ammount of 'pawns' that are just the right color.
+        - The second number refers to the amount of 'pawns' that are just the right color.
           In this case the its a correct Letter.
 
           If this is the case I change the value in the answers list to a 'T' for taken
