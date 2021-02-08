@@ -6,7 +6,11 @@ COMBINATIONS = ['A', 'B', 'C', 'D', 'E', 'F']
 
 def create_random_combination():
     """
+
     Create and return an random combination of 4
+
+    :return:
+
     """
 
     combination = []
@@ -18,7 +22,12 @@ def create_random_combination():
 
 def ask_for_input(text):
     """
+
     Really easy request for input from the user
+
+    :param text:
+    :return:
+
     """
 
     input_text = input(text).upper()
@@ -29,6 +38,7 @@ def ask_for_input(text):
 
 def validate(input_text, kind):
     """
+
     Function to check of the input from the user is valid.
 
     kind stands for which validation check have to be performed.
@@ -40,6 +50,11 @@ def validate(input_text, kind):
     - kind: 1 stands for the menu-item validation
         - If the input_text is an integer
         - If the input_text isn't higher than the highest menu-item
+
+    :param input_text:
+    :param kind:
+    :return:
+
     """
 
     valid = True
@@ -61,10 +76,16 @@ def validate(input_text, kind):
 
 def request_valid_input(text, kind):
     """
+
     This is the main input/validate function.
     It works as a sort of loop that keeps calling himself until the validation is correct.
 
     At that point the function returns the user input_text to the main game loop
+
+    :param text:
+    :param kind:
+    :return:
+
     """
 
     input_text = ask_for_input(text)
@@ -79,6 +100,7 @@ def request_valid_input(text, kind):
 
 def feedback_calculate(answer, guess):
     """
+
     In this function I'm handling the guess from the player or computer.
 
     I'm returning this value as described in the article, Yet another mastermind strategy.
@@ -92,6 +114,11 @@ def feedback_calculate(answer, guess):
           In this case the its a correct Letter.
 
           If this is the case I change the value in the answers list to a 'T' for taken
+
+    :param answer:
+    :param guess:
+    :return:
+
     """
 
     tmp_answer = answer.copy()
