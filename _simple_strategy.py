@@ -73,7 +73,7 @@ def remove_impossible_guesses(guesses, possibilities):
     
     Rule 1: 
     
-    If feedback has no white and black pawns remove all possibilities with those characters.
+    If feedback has no white and black pawns add the possible options to the new list.
     
     '''
     if black_pawn_last_guess == 0 and white_pawn_last_guess == 0:
@@ -90,7 +90,7 @@ def remove_impossible_guesses(guesses, possibilities):
     
     Rule 2:
     
-    If feedback has 4 white or the black and white add up to 4 pawns remove all possibilities without all these 4 
+    If feedback has 4 white or the black and white add up to 4 pawns add the possible options to the new list
     
     '''
 
@@ -109,7 +109,7 @@ def remove_impossible_guesses(guesses, possibilities):
     
     Rule 3:
     
-    If feedback has 1 or 2 or 3 white or black pawns remove all possibilities which doesn't at least have 2 or 3 of the same in the reeks
+    If feedback has 1 or 2 or 3 white or black pawns add the possible options to the new list
     
     '''
 
