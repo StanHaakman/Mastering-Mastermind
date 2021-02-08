@@ -47,7 +47,6 @@ def simple_strategy(guesses, answer, possibilities=None):
         feedback = feedback_calculate(answer, guess)
 
     remaining_answers = possibilities
-    print(len(remaining_answers))
     return guess, feedback, remaining_answers
 
 
@@ -65,7 +64,10 @@ def remove_impossible_guesses(guesses, possibilities):
     black_pawn_last_guess = guesses[-1]['A'][1]
     white_pawn_last_guess = guesses[-1]['A'][0]
 
+    pawns = black_pawn_last_guess + white_pawn_last_guess
+
     last_guess = guesses[-1]['Q']
+    remaining_possibilities = []
 
     '''
     
@@ -81,9 +83,8 @@ def remove_impossible_guesses(guesses, possibilities):
                 if letter in reeks:
                     valid = False
 
-            if not valid:
-                possibilities.remove(reeks)
-        print('0 Goede')
+            if valid:
+                remaining_possibilities.append(reeks)
 
     '''
     
@@ -94,16 +95,14 @@ def remove_impossible_guesses(guesses, possibilities):
     '''
 
     if black_pawn_last_guess + white_pawn_last_guess == 4:
-        print(last_guess)
         for reeks in possibilities:
             valid = True
             for letter in last_guess:
                 if letter not in reeks:
                     valid = False
 
-            if not valid:
-                possibilities.remove(reeks)
-        print('4 Goede')
+            if valid:
+                remaining_possibilities.append(reeks)
 
 
     '''
@@ -114,16 +113,13 @@ def remove_impossible_guesses(guesses, possibilities):
     
     '''
 
-    if black_pawn_last_guess + white_pawn_last_guess == 3 or 2 or 1:
-        pawns = black_pawn_last_guess + white_pawn_last_guess
+    if pawns == 3 or pawns == 2 or pawns == 1:
         for reeks in possibilities:
             similarities = 0
             for letter in last_guess:
                 if letter in reeks:
                     similarities += 1
 
-            if similarities < pawns:
-                possibilities.remove(reeks)
-        print(f'{pawns} goede')
-
-    return possibilities
+            if similarities > pawns:
+                remaining_possibilities.append(reeks)
+    return remaining_possibilities

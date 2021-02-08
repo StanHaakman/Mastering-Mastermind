@@ -127,12 +127,13 @@ def feedback_calculate(answer, guess):
     feedback = [0, 0]
 
     for i, c in enumerate(tmp_guess):
-        if c in tmp_answer and i == tmp_answer.index(c):
+        if tmp_answer[i] == tmp_guess[i]:
             tmp_answer[i] = 'Z'
             tmp_guess[i] = 'W'
             feedback[0] += 1
 
     for i, c in enumerate(tmp_guess):
+
         if c in tmp_answer:
             tmp_answer[tmp_answer.index(c)] = 'T'
             feedback[1] += 1
