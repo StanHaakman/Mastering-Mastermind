@@ -1,0 +1,9 @@
+Qua efficientie is er niet veel op aan te merken, mooi gebruik gemaakt van functies binnen functies, geen overbodige loops/dingen. 
+Enige ding is de range die af en toe buiten bereik ligt, maar dat is wellicht op te lossen met de ‘Choice’ van random
+
+Voor leesbaarheid mis ik wat commentaar om de code in de main makkelijk te begrijpen te maken, in de skelet heb ik juist het gevoel dat 
+er iets te veel in de comments staat.  De ‘parameter’ en ‘return’ zijn daar niet per sé nodig, want die staan al duidelijk in de code, 
+daarnaast lijkt de comment (in ieder geval bij de feedback_calculate) even lang zo niet langer dan de functie zelf (uitleg voor zwart 
+of black is niet meteen van belang). Dit is een stuk beter in de simple_strategy, waar het is beperkt tot 1 regel uitleg voor ieder stuk. 
+
+Herbruikbaarheid is goed, nauwelijks dubbele regels/berekeningen te zien, en de grote van de functies is hierdoor ook goed
