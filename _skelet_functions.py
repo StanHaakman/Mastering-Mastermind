@@ -50,6 +50,7 @@ def validate(input_text, kind):
     - kind: 1 stands for the menu-item validation
         - If the input_text is an integer
         - If the input_text isn't higher than the highest menu-item
+    - kind: 2 stands for the amount of turn
 
     :param input_text:
     :param kind:
@@ -68,6 +69,11 @@ def validate(input_text, kind):
             input_text = int(input_text)
             if input_text > 6:
                 valid = False
+        except ValueError:
+            valid = False
+    elif kind == 2:
+        try:
+            input_text = int(input_text)
         except ValueError:
             valid = False
 
@@ -91,7 +97,7 @@ def request_valid_input(text, kind):
     input_text = ask_for_input(text)
 
     if validate(input_text, kind):
-        if kind == 1:
+        if kind == 1 or kind == 2:
             return int(input_text)
         return input_text
     print('Invoer invalid. Probeer opnieuw')

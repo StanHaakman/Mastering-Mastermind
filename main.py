@@ -6,6 +6,7 @@ MENU_OPTIONS = [
     'Typ het nummer in wat bij uw keuze hoort;',
     '1: Player vs Computer',
     '2: Computer vs Computer, Simple strategy',
+    '3: Computer vs Computer, Simple strategy. Set own ammount.',
     '6: Beëindigen'
 ]
 
@@ -17,39 +18,73 @@ def store_data(guess, feedback):
 
 
 def game_loop(kind):
-    RANDOM_COMBINATION = create_random_combination()
-    print(f'Right answer: {RANDOM_COMBINATION}')
-    turn = 1
+    turn = 0
     possibilities = None
-    while turn < 11:
+    if kind == 2:
+        amount_of_games = request_valid_input(text='Aantal spellen: ', kind=2)
+        turns = []
 
-        if kind == 0:
+        for i in range(amount_of_games):
+            turn = 0
+            RANDOM_COMBINATION = create_random_combination()
+            while True:
+                guess, feedback, possibilities = simple_strategy(GUESSES, RANDOM_COMBINATION, possibilities=possibilities)
 
-            guess = []
-            guess[:0] = request_valid_input(text='Uw combinatie: ', kind=0)
+                store_data(guess, feedback)
 
-            feedback = feedback_calculate(RANDOM_COMBINATION, guess)
+                if feedback[0] == 4:
+                    # print(f'Je heb gewonnen!!\nIn {turn} pogingen')
+                    RANDOM_COMBINATION.clear()
+                    if kind != 0:
+                        possibilities.clear()
+                    GUESSES.clear()
+                    turns.append(turn)
+                    break
 
-            feedback_and_guess = 'z' * feedback[0] + 'o' * (4 - feedback[0]) + ' ' + ' - '.join(guess) + ' ' + 'w' * \
-                                 feedback[1] + 'o' * (4 - feedback[1])
+                turn += 1
 
-            print(feedback_and_guess)
+        gem_turn = sum(turns) / len(turns)
+        print(f'Het gemiddelde over de {amount_of_games} pogingen was {gem_turn}')
 
-        elif kind == 1:
+    else:
+        RANDOM_COMBINATION = create_random_combination()
+        # print(f'Right answer: {RANDOM_COMBINATION}')
+        while True:
 
-            guess, feedback, possibilities = simple_strategy(GUESSES, RANDOM_COMBINATION, possibilities=possibilities)
+            if kind == 0:
 
-        store_data(guess, feedback)
+                guess = []
+                guess[:0] = request_valid_input(text='Uw combinatie: ', kind=0)
 
-        if feedback[0] == 4:
-            print('Je heb gewonnen!!')
-            break
+                feedback = feedback_calculate(RANDOM_COMBINATION, guess)
 
-        turn += 1
-        if turn > 10:
-            print(f'Jammer je beurten zijn op, de juiste code was: {" - ".join(RANDOM_COMBINATION)}')
-            GUESSES.clear()
-    menu()
+                feedback_and_guess = 'z' * feedback[0] + 'o' * (4 - feedback[0]) + ' ' + ' - '.join(guess) + ' ' + 'w' * \
+                                     feedback[1] + 'o' * (4 - feedback[1])
+
+                print(feedback_and_guess)
+
+            elif kind == 1:
+
+                guess, feedback, possibilities = simple_strategy(GUESSES, RANDOM_COMBINATION, possibilities=possibilities)
+
+            store_data(guess, feedback)
+
+            if feedback[0] == 4:
+                print(f'Je heb gewonnen!!\nIn {turn} pogingen')
+                RANDOM_COMBINATION.clear()
+                if kind != 0:
+                    possibilities.clear()
+                GUESSES.clear()
+                break
+
+            turn += 1
+            if turn > 100:
+                print(f'Jammer je beurten zijn op, de juiste code was: {" - ".join(RANDOM_COMBINATION)}')
+                print(possibilities)
+                RANDOM_COMBINATION.clear()
+                possibilities = None
+                GUESSES.clear()
+                break
 
 
 def menu():
@@ -64,8 +99,11 @@ def menu():
     elif menu_keuze == 2:
         # Computer vs Computer, 'Simple strategy'
         game_loop(kind=1)
+    elif menu_keuze == 3:
+        game_loop(kind=2)
     elif menu_keuze == 6:
         quit()
 
 
-menu()
+while True:
+    menu()
