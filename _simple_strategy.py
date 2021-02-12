@@ -1,22 +1,4 @@
-import random
-import itertools
-
 from _skelet_functions import *
-
-
-def create_list_of_combinations(combinations, n):
-    """
-
-    Create a list of all the possible combinations
-
-    :param combinations:
-    :param n:
-    :return:
-
-    """
-    all_possibilities = list(itertools.product(combinations, repeat=n))
-    all_possibilities = [list(x) for x in all_possibilities]
-    return all_possibilities
 
 
 def simple_strategy(guesses, answer, possibilities=None):

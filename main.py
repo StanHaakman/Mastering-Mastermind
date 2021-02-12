@@ -1,4 +1,4 @@
-from _simple_strategy import simple_strategy, create_list_of_combinations
+from _simple_strategy import simple_strategy
 from _skelet_functions import *
 
 COMBINATIONS = ['A', 'B', 'C', 'D', 'E', 'F']
@@ -6,7 +6,8 @@ MENU_OPTIONS = [
     'Typ het nummer in wat bij uw keuze hoort;',
     '1: Player vs Computer',
     '2: Computer vs Computer, Simple strategy',
-    '3: Computer vs Computer, Simple strategy. Set own ammount.',
+    '3: Computer vs Computer, Simple strategy. Set own amount.',
+    '4: Computer vs Player',
     '6: Beëindigen'
 ]
 
@@ -18,25 +19,38 @@ def store_data(guess, feedback):
 
 
 def game_loop(kind):
-    turn = 0
+    """
+
+    Call different functions based on the chosen game in the menu
+
+    kind:
+    - 0 Player vs Computer
+    - 1 Computer vs Computer, Simple strategy
+    - 2 Computer vs Computer, Simple strategy. Set own amount.
+    - 3 Computer vs Player
+
+    :param kind:
+    :return:
+    """
+
     possibilities = None
     if kind == 2:
-        amount_of_games = request_valid_input(text='Aantal spellen: ', kind=2)
+        amount_of_games = request_valid_input(text='Aantal spellen: ', validation_kind=2)
         turns = []
 
         for i in range(amount_of_games):
-            turn = 0
+            turn = 1
             RANDOM_COMBINATION = create_random_combination()
             while True:
                 guess, feedback, possibilities = simple_strategy(GUESSES, RANDOM_COMBINATION, possibilities=possibilities)
 
+                # Save guess and feedback to the to a guesses dictionary
                 store_data(guess, feedback)
 
+                # If the feedback contains 4 black pawns the game is over
                 if feedback[0] == 4:
-                    # print(f'Je heb gewonnen!!\nIn {turn} pogingen')
                     RANDOM_COMBINATION.clear()
-                    if kind != 0:
-                        possibilities.clear()
+                    possibilities.clear()
                     GUESSES.clear()
                     turns.append(turn)
                     break
@@ -47,14 +61,19 @@ def game_loop(kind):
         print(f'Het gemiddelde over de {amount_of_games} pogingen was {gem_turn}')
 
     else:
-        RANDOM_COMBINATION = create_random_combination()
-        # print(f'Right answer: {RANDOM_COMBINATION}')
+        turn = 1
+
+        if kind == 3 or kind == 0:
+            RANDOM_COMBINATION = request_valid_input(text='Geheime combinatie: ', validation_kind=3)
+        else:
+            RANDOM_COMBINATION = create_random_combination()
+
         while True:
 
             if kind == 0:
 
                 guess = []
-                guess[:0] = request_valid_input(text='Uw combinatie: ', kind=0)
+                guess[:0] = request_valid_input(text='Uw combinatie: ', validation_kind=0)
 
                 feedback = feedback_calculate(RANDOM_COMBINATION, guess)
 
@@ -63,12 +82,14 @@ def game_loop(kind):
 
                 print(feedback_and_guess)
 
-            elif kind == 1:
+            else:
 
                 guess, feedback, possibilities = simple_strategy(GUESSES, RANDOM_COMBINATION, possibilities=possibilities)
 
+            # Save guess and feedback to the to a guesses dictionary
             store_data(guess, feedback)
 
+            # If the feedback contains 4 black pawns the game is over
             if feedback[0] == 4:
                 print(f'Je heb gewonnen!!\nIn {turn} pogingen')
                 RANDOM_COMBINATION.clear()
@@ -78,9 +99,10 @@ def game_loop(kind):
                 break
 
             turn += 1
-            if turn > 100:
+
+            # If the current player runs out of turns return the program to the main menu
+            if turn > 10:
                 print(f'Jammer je beurten zijn op, de juiste code was: {" - ".join(RANDOM_COMBINATION)}')
-                print(possibilities)
                 RANDOM_COMBINATION.clear()
                 possibilities = None
                 GUESSES.clear()
@@ -88,10 +110,16 @@ def game_loop(kind):
 
 
 def menu():
+    '''
+
+    This is the function that shows the menu when code is run
+
+    :return:
+    '''
     for option in MENU_OPTIONS:
         print(option)
 
-    menu_keuze = request_valid_input(text='Menu keuze: ', kind=1)
+    menu_keuze = request_valid_input(text='Menu keuze: ', validation_kind=1)
 
     if menu_keuze == 1:
         # Player vs Computer
@@ -100,7 +128,12 @@ def menu():
         # Computer vs Computer, 'Simple strategy'
         game_loop(kind=1)
     elif menu_keuze == 3:
+        # Computer vs Computer, 'Simple strategy' but with the choice of the amount of games and
+        # result with the average of turns
         game_loop(kind=2)
+    elif menu_keuze == 4:
+        # Computer vs player
+        game_loop(kind=3)
     elif menu_keuze == 6:
         quit()
 

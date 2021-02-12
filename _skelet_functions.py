@@ -1,5 +1,5 @@
 import random
-# from main import GUESSES
+import itertools
 
 COMBINATIONS = ['A', 'B', 'C', 'D', 'E', 'F']
 
@@ -36,42 +36,42 @@ def ask_for_input(text):
     return input_text
 
 
-def validate(input_text, kind):
+def validate(input_text, validation_kind):
     """
 
     Function to check of the input from the user is valid.
 
     kind stands for which validation check have to be performed.
 
-    - kind: 0 stands for the combination validation
+    - validation_kind: 0 stands for the combination validation
         - If all the letters are possible answers
         - If the input_text is a string
         - If input_text contains exactly 4 characters
-    - kind: 1 stands for the menu-item validation
+    - validation_kind: 1 stands for the menu-item validation
         - If the input_text is an integer
         - If the input_text isn't higher than the highest menu-item
-    - kind: 2 stands for the amount of turn
+    - validation_kind: 2 stands for the amount of turn
 
     :param input_text:
-    :param kind:
+    :param validation_kind:
     :return:
 
     """
 
     valid = True
 
-    if kind == 0:
+    if validation_kind == 0 or validation_kind == 3:
         for letter in input_text:
             if type(letter) != str or letter not in COMBINATIONS or len(input_text) != 4:
                 valid = False
-    elif kind == 1:
+    elif validation_kind == 1:
         try:
             input_text = int(input_text)
             if input_text > 6:
                 valid = False
         except ValueError:
             valid = False
-    elif kind == 2:
+    elif validation_kind == 2:
         try:
             input_text = int(input_text)
         except ValueError:
@@ -80,7 +80,7 @@ def validate(input_text, kind):
     return valid
 
 
-def request_valid_input(text, kind):
+def request_valid_input(text, validation_kind):
     """
 
     This is the main input/validate function.
@@ -96,12 +96,14 @@ def request_valid_input(text, kind):
 
     input_text = ask_for_input(text)
 
-    if validate(input_text, kind):
-        if kind == 1 or kind == 2:
+    if validate(input_text, validation_kind):
+        if validation_kind == 1 or validation_kind == 2:
             return int(input_text)
+        elif validation_kind == 3:
+            return list(input_text)
         return input_text
     print('Invoer invalid. Probeer opnieuw')
-    return request_valid_input(text, kind)
+    return request_valid_input(text, validation_kind)
 
 
 def feedback_calculate(answer, guess):
@@ -145,3 +147,18 @@ def feedback_calculate(answer, guess):
             feedback[1] += 1
 
     return feedback
+
+
+def create_list_of_combinations(combinations, n):
+    """
+
+    Create a list of all the possible combinations
+
+    :param combinations:
+    :param n:
+    :return:
+
+    """
+    all_possibilities = list(itertools.product(combinations, repeat=n))
+    all_possibilities = [list(x) for x in all_possibilities]
+    return all_possibilities
