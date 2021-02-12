@@ -1,4 +1,6 @@
 from _simple_strategy import simple_strategy
+from _worst_case_strategy import worst_case_strategy
+
 from _skelet_functions import *
 
 COMBINATIONS = ['A', 'B', 'C', 'D', 'E', 'F']
@@ -8,6 +10,7 @@ MENU_OPTIONS = [
     '2: Computer vs Computer, Simple strategy',
     '3: Computer vs Computer, Simple strategy. Set own amount.',
     '4: Computer vs Player',
+    '5: Computer vs Computer, Worst case. set own amount. Not working!',
     '6: Beëindigen'
 ]
 
@@ -34,7 +37,7 @@ def game_loop(kind):
     """
 
     possibilities = None
-    if kind == 2:
+    if kind == 2 or kind == 4:
         amount_of_games = request_valid_input(text='Aantal spellen: ', validation_kind=2)
         turns = []
 
@@ -42,7 +45,13 @@ def game_loop(kind):
             turn = 1
             RANDOM_COMBINATION = create_random_combination()
             while True:
-                guess, feedback, possibilities = simple_strategy(GUESSES, RANDOM_COMBINATION, possibilities=possibilities)
+
+                if kind == 2:
+                    guess, feedback, possibilities = simple_strategy(GUESSES, RANDOM_COMBINATION,
+                                                                     possibilities=possibilities)
+                elif kind == 4:
+                    guess, feedback, possibilities = worst_case_strategy(GUESSES, RANDOM_COMBINATION,
+                                                                         possibilities=possibilities)
 
                 # Save guess and feedback to the to a guesses dictionary
                 store_data(guess, feedback)
@@ -84,7 +93,8 @@ def game_loop(kind):
 
             else:
 
-                guess, feedback, possibilities = simple_strategy(GUESSES, RANDOM_COMBINATION, possibilities=possibilities)
+                guess, feedback, possibilities = simple_strategy(GUESSES, RANDOM_COMBINATION,
+                                                                 possibilities=possibilities)
 
             # Save guess and feedback to the to a guesses dictionary
             store_data(guess, feedback)
@@ -110,12 +120,12 @@ def game_loop(kind):
 
 
 def menu():
-    '''
+    """
 
     This is the function that shows the menu when code is run
 
     :return:
-    '''
+    """
     for option in MENU_OPTIONS:
         print(option)
 
@@ -134,6 +144,9 @@ def menu():
     elif menu_keuze == 4:
         # Computer vs player
         game_loop(kind=3)
+    elif menu_keuze == 5:
+        # Worst case
+        game_loop(kind=4)
     elif menu_keuze == 6:
         quit()
 
